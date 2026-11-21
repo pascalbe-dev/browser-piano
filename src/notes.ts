@@ -1,6 +1,6 @@
 export const BASE_MIDI = 48
 export const OCTAVES = 3
-export const KEY_COUNT = OCTAVES * 12 + 1
+export const KEY_COUNT = OCTAVES * 12
 
 const NOTE_NAMES = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B']
 const BLACK_PITCH_CLASSES = new Set([1, 3, 6, 8, 10])
@@ -19,26 +19,24 @@ const MODE_INTERVALS: Record<ScaleMode, number[]> = {
   minor: [0, 2, 3, 5, 7, 8, 10],
 }
 
-const ROW_KEY_COUNT = 11
-
 interface KeyRow {
-  start: (scaleNoteCount: number) => number
+  start: number
   codes: string[]
 }
 
 export const ROWS: KeyRow[] = [
   {
-    start: () => 0,
+    start: 0,
     codes: ['KeyZ', 'KeyX', 'KeyC', 'KeyV', 'KeyB', 'KeyN', 'KeyM', 'Comma', 'Period', 'Slash'],
   },
   {
-    start: (count) => Math.floor((count - ROW_KEY_COUNT) / 2),
+    start: 5,
     codes: [
       'KeyA', 'KeyS', 'KeyD', 'KeyF', 'KeyG', 'KeyH', 'KeyJ', 'KeyK', 'KeyL', 'Semicolon', 'Quote',
     ],
   },
   {
-    start: (count) => count - ROW_KEY_COUNT,
+    start: 10,
     codes: [
       'KeyQ', 'KeyW', 'KeyE', 'KeyR', 'KeyT', 'KeyY', 'KeyU', 'KeyI', 'KeyO', 'KeyP', 'BracketLeft',
     ],
@@ -103,9 +101,8 @@ export function buildKeyMap(scale: Scale): KeyMap {
   const codeToIndex = new Map<string, number>()
   const indexToCodes = new Map<number, string[]>()
   for (const row of ROWS) {
-    const start = row.start(scaleIndices.length)
     row.codes.forEach((code, position) => {
-      const index = scaleIndices[start + position]
+      const index = scaleIndices[row.start + position]
       if (index === undefined) return
       codeToIndex.set(code, index)
       indexToCodes.set(index, [...(indexToCodes.get(index) ?? []), code])
