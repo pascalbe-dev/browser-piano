@@ -73,11 +73,30 @@ export function pitchClassName(pitchClass: number): string {
   return NOTE_NAMES[pitchClass]
 }
 
-export function buildKeyMap(scale: Scale): KeyMap {
-  const intervals = new Set(MODE_INTERVALS[scale.mode].map((step) => (step + scale.root) % 12))
-  const scaleIndices = KEYS.filter((key) => intervals.has((BASE_MIDI + key.index) % 12)).map(
+export function scaleKeyIndices(scale: Scale): number[] {
+  const pitchClasses = new Set(MODE_INTERVALS[scale.mode].map((step) => (step + scale.root) % 12))
+  return KEYS.filter((key) => pitchClasses.has((BASE_MIDI + key.index) % 12)).map(
     (key) => key.index,
   )
+}
+
+export function chordKeyIndices(scale: Scale, degree: number): number[] {
+  const scaleIndices = scaleKeyIndices(scale)
+  const rootPosition = scaleIndices.findIndex((index) => index % 12 === scale.root)
+  const position = (rootPosition + degree) % 7
+  return [position, position + 2, position + 4].map((p) => scaleIndices[p])
+}
+
+export function chordName(scale: Scale, degree: number): string {
+  const [root, third, fifth] = chordKeyIndices(scale, degree)
+  const thirdSize = third - root
+  const fifthSize = fifth - root
+  const quality = thirdSize === 4 ? '' : fifthSize === 7 ? 'm' : 'dim'
+  return `${NOTE_NAMES[root % 12]}${quality}`
+}
+
+export function buildKeyMap(scale: Scale): KeyMap {
+  const scaleIndices = scaleKeyIndices(scale)
 
   const codeToIndex = new Map<string, number>()
   const indexToCodes = new Map<number, string[]>()
