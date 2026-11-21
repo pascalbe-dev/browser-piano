@@ -1,22 +1,93 @@
+import { useCallback, useEffect, useRef, useState } from 'react'
+import { type AudioStatus, noteOff, noteOn, releaseAll, startAudio } from './audio'
+import { KEY_BY_CODE, keyMidi } from './notes'
 import { Piano } from './Piano'
+import { useKeyLabels } from './useKeyLabels'
 import './App.css'
 
-const EMPTY_SET: ReadonlySet<number> = new Set()
-const EMPTY_LABELS: ReadonlyMap<string, string> = new Map()
+const STATUS_TEXT: Record<AudioStatus, string> = {
+  idle: 'Taste drücken oder klicken, um den Ton zu starten',
+  loading: 'Klaviersamples laden … (Synth-Klang bis dahin)',
+  ready: 'Klavier bereit',
+  fallback: 'Samples nicht erreichbar – Synth-Klang',
+}
 
 function App() {
+  const transpose = 0
+  const transposeRef = useRef(transpose)
+  const playing = useRef(new Map<number, number>())
+  const [activeKeys, setActiveKeys] = useState<ReadonlySet<number>>(new Set())
+  const [status, setStatus] = useState<AudioStatus>('idle')
+  const keyLabels = useKeyLabels()
+
+  const syncActive = useCallback(() => {
+    setActiveKeys(new Set(playing.current.keys()))
+  }, [])
+
+  const press = useCallback(
+    (index: number) => {
+      if (playing.current.has(index)) return
+      const midi = keyMidi(index, transposeRef.current)
+      playing.current.set(index, midi)
+      syncActive()
+      void startAudio(setStatus).then(() => {
+        if (playing.current.get(index) === midi) noteOn(midi)
+      })
+    },
+    [syncActive],
+  )
+
+  const release = useCallback(
+    (index: number) => {
+      const midi = playing.current.get(index)
+      if (midi === undefined) return
+      playing.current.delete(index)
+      syncActive()
+      noteOff(midi)
+    },
+    [syncActive],
+  )
+
+  useEffect(() => {
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.metaKey || event.ctrlKey || event.altKey) return
+      const key = KEY_BY_CODE.get(event.code)
+      if (!key) return
+      event.preventDefault()
+      if (!event.repeat) press(key.index)
+    }
+    const onKeyUp = (event: KeyboardEvent) => {
+      const key = KEY_BY_CODE.get(event.code)
+      if (key) release(key.index)
+    }
+    const onBlur = () => {
+      playing.current.clear()
+      syncActive()
+      releaseAll()
+    }
+    window.addEventListener('keydown', onKeyDown)
+    window.addEventListener('keyup', onKeyUp)
+    window.addEventListener('blur', onBlur)
+    return () => {
+      window.removeEventListener('keydown', onKeyDown)
+      window.removeEventListener('keyup', onKeyUp)
+      window.removeEventListener('blur', onBlur)
+    }
+  }, [press, release, syncActive])
+
   return (
     <main className="app">
       <h1>Browser Piano</h1>
       <div className="stage">
         <Piano
-          transpose={0}
-          activeKeys={EMPTY_SET}
-          keyLabels={EMPTY_LABELS}
-          onPress={() => {}}
-          onRelease={() => {}}
+          transpose={transpose}
+          activeKeys={activeKeys}
+          keyLabels={keyLabels}
+          onPress={press}
+          onRelease={release}
         />
       </div>
+      <p className="status">{STATUS_TEXT[status]}</p>
     </main>
   )
 }

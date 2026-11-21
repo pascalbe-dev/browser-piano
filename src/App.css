@@ -12,6 +12,12 @@
   background: var(--panel);
 }
 
+.status {
+  margin: 12px 0 0;
+  font-size: 14px;
+  color: var(--muted);
+}
+
 .app h1 {
   margin: 0 0 24px;
   font-size: 28px;
