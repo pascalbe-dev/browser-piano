@@ -1,30 +1,42 @@
 import * as Tone from 'tone'
 import { noteOff, noteOn } from './audio'
 
-export interface SequenceConfig {
-  bpm: number
+export interface Voice {
   velocity: () => number
   stepAt: (step: number) => number[] | null
+}
+
+export interface SequenceConfig {
+  bpm: number
+  voices: Voice[]
   onStep: (step: number) => void
 }
 
 let eventId: number | null = null
-let held: number[] = []
+let held: number[][] = []
+
+function heldByOthers(midi: number, voiceIndex: number): boolean {
+  return held.some((notes, index) => index !== voiceIndex && notes.includes(midi))
+}
 
 export function startSequence(config: SequenceConfig): void {
   stopSequence()
   const transport = Tone.getTransport()
   transport.bpm.value = config.bpm
+  held = config.voices.map(() => [])
   let step = 0
   eventId = transport.scheduleRepeat((time) => {
     const current = step++
-    const midis = config.stepAt(current)
-    if (midis !== null) {
-      held.forEach((midi) => noteOff(midi, time))
-      held = midis
-      const velocity = config.velocity()
-      held.forEach((midi) => noteOn(midi, time, velocity))
-    }
+    config.voices.forEach((voice, voiceIndex) => {
+      const midis = voice.stepAt(current)
+      if (midis === null) return
+      held[voiceIndex].forEach((midi) => {
+        if (!heldByOthers(midi, voiceIndex) || midis.includes(midi)) noteOff(midi, time)
+      })
+      held[voiceIndex] = midis
+      const velocity = voice.velocity()
+      midis.forEach((midi) => noteOn(midi, time, velocity))
+    })
     Tone.getDraw().schedule(() => config.onStep(current), time)
   }, '8n')
   transport.start()
@@ -35,7 +47,7 @@ export function stopSequence(): void {
   if (eventId !== null) transport.clear(eventId)
   eventId = null
   transport.stop()
-  held.forEach((midi) => noteOff(midi))
+  held.flat().forEach((midi) => noteOff(midi))
   held = []
 }
 

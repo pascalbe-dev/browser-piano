@@ -3,7 +3,7 @@ import { type AudioStatus, startAudio } from './audio'
 import { type Scale, chordKeyIndices, keyMidi } from './notes'
 import { PATTERNS, STEPS_PER_BAR, soundingKeys, voiceKeys } from './patterns'
 import { PROGRESSIONS } from './progressions'
-import { setTempo, startSequence, stopSequence } from './sequencer'
+import { type Voice, setTempo, startSequence, stopSequence } from './sequencer'
 
 export const MIN_BPM = 40
 export const MAX_BPM = 200
@@ -42,8 +42,7 @@ export function usePlayback(
 
   useEffect(() => {
     if (!playing) return
-    startSequence({
-      bpm: latest.current.bpm,
+    const leftHand: Voice = {
       velocity: () => (latest.current.volume / 100) ** 2,
       stepAt: (index) => {
         const voice = pattern.steps[index % STEPS_PER_BAR]
@@ -55,8 +54,8 @@ export function usePlayback(
         const chordKeys = chordKeyIndices(currentScale, degree)
         return voiceKeys(chordKeys, voice).map((key) => keyMidi(key, currentTranspose))
       },
-      onStep: setStep,
-    })
+    }
+    startSequence({ bpm: latest.current.bpm, voices: [leftHand], onStep: setStep })
     return () => stopSequence()
   }, [playing, progressionId, pattern])
 
