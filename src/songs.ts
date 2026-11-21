@@ -61,6 +61,11 @@ const SAVE_TONIGHT_TRANSCRIPTION = `
 
 const SAVE_TONIGHT_LOOP_SLOTS = 512
 
+const IMS_YOURS_TRANSCRIPTION = `
+`
+
+const IMS_YOURS_LOOP_SLOTS = 512
+
 export const SONGS: Song[] = [
   {
     id: 'save-tonight',
@@ -73,6 +78,20 @@ export const SONGS: Song[] = [
       loopStart: 32,
       loopSlots: SAVE_TONIGHT_LOOP_SLOTS,
       slotScale: 2,
+    }),
+  },
+  {
+    id: 'im-yours',
+    title: "I'm Yours",
+    draft: true,
+    scale: { root: 0, mode: 'major' },
+    progressionId: 'pop',
+    bpm: 76,
+    loopSlots: IMS_YOURS_LOOP_SLOTS,
+    notes: buildNotes(IMS_YOURS_TRANSCRIPTION, {
+      loopStart: 64,
+      loopSlots: IMS_YOURS_LOOP_SLOTS,
+      slotScale: 1,
     }),
   },
 ]
