@@ -136,8 +136,6 @@ function App() {
         onPattern={leftHand.setPatternId}
         playing={leftHand.playing}
         onToggle={() => void toggleLeftHand()}
-        degrees={leftHand.degrees}
-        currentChord={leftHand.currentChord}
       />
       <p className="status">{STATUS_TEXT[status]}</p>
     </main>

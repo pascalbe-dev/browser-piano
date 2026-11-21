@@ -79,28 +79,6 @@
   opacity: 0.7;
 }
 
-.chord-strip {
-  display: flex;
-  gap: 8px;
-}
-
-.chord-strip span {
-  min-width: 72px;
-  padding: 10px 0;
-  border: 1px solid #3a3d4a;
-  border-radius: 8px;
-  text-align: center;
-  font-size: 20px;
-  font-weight: 600;
-  color: var(--muted);
-}
-
-.chord-strip span.current {
-  border-color: #14b8a6;
-  background: #14b8a6;
-  color: #04201d;
-}
-
 .tempo {
   display: flex;
   align-items: center;

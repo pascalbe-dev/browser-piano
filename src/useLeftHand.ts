@@ -84,8 +84,6 @@ export function useLeftHand(
     setVolume,
     playing,
     toggle,
-    degrees,
-    currentChord,
     autoKeys,
   }
 }

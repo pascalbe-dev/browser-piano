@@ -16,8 +16,6 @@ interface LeftHandProps {
   onVolume: (volume: number) => void
   playing: boolean
   onToggle: () => void
-  degrees: number[]
-  currentChord: number | null
 }
 
 export function LeftHand({
@@ -32,8 +30,6 @@ export function LeftHand({
   onVolume,
   playing,
   onToggle,
-  degrees,
-  currentChord,
 }: LeftHandProps) {
   return (
     <section className="left-hand">
@@ -78,14 +74,6 @@ export function LeftHand({
             </button>
           ))}
         </div>
-      </div>
-
-      <div className="chord-strip">
-        {degrees.map((degree, position) => (
-          <span key={position} className={position === currentChord ? 'current' : ''}>
-            {chordName(scale, degree)}
-          </span>
-        ))}
       </div>
 
       <label className="tempo">
