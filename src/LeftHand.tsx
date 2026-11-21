@@ -1,7 +1,7 @@
 import { type Scale, chordName } from './notes'
 import { PATTERNS } from './patterns'
 import { PROGRESSIONS } from './progressions'
-import { MAX_BPM, MIN_BPM } from './useLeftHand'
+import { MAX_BPM, MIN_BPM, patternShortcut, progressionShortcut } from './useLeftHand'
 import './LeftHand.css'
 
 interface LeftHandProps {
@@ -44,7 +44,7 @@ export function LeftHand({
       <div className="option-row">
         <span className="row-label">Akkorde</span>
         <div className="options">
-          {PROGRESSIONS.map((progression) => (
+          {PROGRESSIONS.map((progression, position) => (
             <button
               key={progression.id}
               type="button"
@@ -52,6 +52,7 @@ export function LeftHand({
               className={progression.id === progressionId ? 'selected' : ''}
               onClick={() => onProgression(progression.id)}
             >
+              <kbd className="shortcut">{progressionShortcut(position)}</kbd>
               {progression.degrees.map((degree) => chordName(scale, degree)).join(' – ')}
             </button>
           ))}
@@ -61,7 +62,7 @@ export function LeftHand({
       <div className="option-row">
         <span className="row-label">Anschlag</span>
         <div className="options">
-          {PATTERNS.map((pattern) => (
+          {PATTERNS.map((pattern, position) => (
             <button
               key={pattern.id}
               type="button"
@@ -69,6 +70,7 @@ export function LeftHand({
               className={pattern.id === patternId ? 'selected' : ''}
               onClick={() => onPattern(pattern.id)}
             >
+              <kbd className="shortcut">{patternShortcut(position)}</kbd>
               {pattern.label}
               <small>{pattern.hint}</small>
             </button>
@@ -90,6 +92,7 @@ export function LeftHand({
           }}
         />
         <output>{bpm} BPM</output>
+        <kbd className="shortcut">← →</kbd>
       </label>
 
       <label className="tempo">
@@ -106,6 +109,7 @@ export function LeftHand({
           }}
         />
         <output>{volume} %</output>
+        <kbd className="shortcut">⇧ ↑ ↓</kbd>
       </label>
     </section>
   )
