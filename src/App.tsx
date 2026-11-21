@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { type AudioStatus, noteOff, noteOn, releaseAll, startAudio } from './audio'
 import { KEY_BY_CODE, keyMidi } from './notes'
 import { Piano } from './Piano'
+import { MAX_TRANSPOSE, Transpose } from './Transpose'
 import { useKeyLabels } from './useKeyLabels'
 import './App.css'
 
@@ -13,8 +14,13 @@ const STATUS_TEXT: Record<AudioStatus, string> = {
 }
 
 function App() {
-  const transpose = 0
+  const [transpose, setTranspose] = useState(0)
   const transposeRef = useRef(transpose)
+
+  useEffect(() => {
+    transposeRef.current = transpose
+  }, [transpose])
+
   const playing = useRef(new Map<number, number>())
   const [activeKeys, setActiveKeys] = useState<ReadonlySet<number>>(new Set())
   const [status, setStatus] = useState<AudioStatus>('idle')
@@ -51,6 +57,12 @@ function App() {
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.metaKey || event.ctrlKey || event.altKey) return
+      if (event.code === 'ArrowUp' || event.code === 'ArrowDown') {
+        event.preventDefault()
+        const step = event.code === 'ArrowUp' ? 1 : -1
+        setTranspose((value) => Math.max(-MAX_TRANSPOSE, Math.min(MAX_TRANSPOSE, value + step)))
+        return
+      }
       const key = KEY_BY_CODE.get(event.code)
       if (!key) return
       event.preventDefault()
@@ -79,6 +91,7 @@ function App() {
     <main className="app">
       <h1>Browser Piano</h1>
       <div className="stage">
+        <Transpose value={transpose} onChange={setTranspose} />
         <Piano
           transpose={transpose}
           activeKeys={activeKeys}
