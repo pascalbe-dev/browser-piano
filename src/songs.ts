@@ -12,6 +12,7 @@ export interface Song {
   draft: boolean
   scale: Scale
   progressionId: string
+  bpm?: number
   loopSlots: number
   notes: SongNote[]
 }
@@ -29,25 +30,36 @@ function keyOf(name: string, octave: number): number {
   return 12 * (octave + 1) + SEMITONES[name] - BASE_MIDI
 }
 
-function buildNotes(raw: string, loopStart: number, loopSlots: number): SongNote[] {
+interface TranscriptionOptions {
+  loopStart: number
+  loopSlots: number
+  slotScale: number
+}
+
+function buildNotes(raw: string, options: TranscriptionOptions): SongNote[] {
+  const { loopStart, loopSlots, slotScale } = options
   const onsets = raw
     .trim()
     .split(/\s+/)
     .map((token) => {
-      const [, slot, name, octave] = /^(\d+)([a-g])(\d)$/.exec(token) ?? []
-      return { start: Number(slot) - loopStart, key: keyOf(name, Number(octave)) }
+      const [, slot, name, octave, length] = /^(\d+)([a-g])(\d)(?::(\d+))?$/.exec(token) ?? []
+      return {
+        start: (Number(slot) - loopStart) * slotScale,
+        key: keyOf(name, Number(octave)),
+        length: length === undefined ? null : Number(length),
+      }
     })
   return onsets.map((note, index) => {
     const next = onsets[index + 1]?.start ?? onsets[0].start + loopSlots
-    return { ...note, length: Math.min(next - note.start, MAX_NOTE_SLOTS) }
+    const length = note.length ?? Math.min(next - note.start, MAX_NOTE_SLOTS * slotScale)
+    return { start: note.start, key: note.key, length }
   })
 }
 
 const SAVE_TONIGHT_TRANSCRIPTION = `
 `
 
-const SAVE_TONIGHT_LOOP_START = 32
-const SAVE_TONIGHT_LOOP_SLOTS = 256
+const SAVE_TONIGHT_LOOP_SLOTS = 512
 
 export const SONGS: Song[] = [
   {
@@ -57,7 +69,11 @@ export const SONGS: Song[] = [
     scale: { root: 0, mode: 'major' },
     progressionId: 'minor-pop',
     loopSlots: SAVE_TONIGHT_LOOP_SLOTS,
-    notes: buildNotes(SAVE_TONIGHT_TRANSCRIPTION, SAVE_TONIGHT_LOOP_START, SAVE_TONIGHT_LOOP_SLOTS),
+    notes: buildNotes(SAVE_TONIGHT_TRANSCRIPTION, {
+      loopStart: 32,
+      loopSlots: SAVE_TONIGHT_LOOP_SLOTS,
+      slotScale: 2,
+    }),
   },
 ]
 

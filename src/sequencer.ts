@@ -38,7 +38,7 @@ export function startSequence(config: SequenceConfig): void {
       midis.forEach((midi) => noteOn(midi, time, velocity))
     })
     Tone.getDraw().schedule(() => config.onStep(current), time)
-  }, '8n')
+  }, '16n')
   transport.start()
 }
 

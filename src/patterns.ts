@@ -1,6 +1,9 @@
-export const STEPS_PER_BAR = 8
+export const STEPS_PER_BAR = 16
 
 export type Voice = 'chord' | 0 | 1 | 2 | 3
+
+const fromEighths = (eighths: (Voice | null)[]): (Voice | null)[] =>
+  eighths.flatMap((voice) => [voice, null])
 
 export interface Pattern {
   id: string
@@ -14,25 +17,25 @@ export const PATTERNS: Pattern[] = [
     id: 'chord',
     label: 'Akkord',
     hint: '1× pro Takt',
-    steps: ['chord', null, null, null, null, null, null, null],
+    steps: fromEighths(['chord', null, null, null, null, null, null, null]),
   },
   {
     id: 'chord-twice',
     label: 'Akkord 2×',
     hint: '2× pro Takt',
-    steps: ['chord', null, null, null, 'chord', null, null, null],
+    steps: fromEighths(['chord', null, null, null, 'chord', null, null, null]),
   },
   {
     id: 'arpeggio',
     label: 'Arpeggio',
     hint: '1 · 3 · 5 · 3',
-    steps: [0, 1, 2, 1, 0, 1, 2, 1],
+    steps: fromEighths([0, 1, 2, 1, 0, 1, 2, 1]),
   },
   {
     id: 'root-fifth',
     label: 'Grundton–Quinte',
     hint: '1 · 5 · 8 · 5',
-    steps: [0, 2, 3, 2, 0, 2, 3, 2],
+    steps: fromEighths([0, 2, 3, 2, 0, 2, 3, 2]),
   },
 ]
 
