@@ -15,8 +15,14 @@ function fallbackLabel(code: string): string {
   return code.replace(/^(Key|Digit)/, '')
 }
 
+function display(label: string): string {
+  return label === 'ß' ? label : label.toUpperCase()
+}
+
 function buildLabels(layout?: Map<string, string>): ReadonlyMap<string, string> {
-  return new Map(KEYS.map((key) => [key.code, layout?.get(key.code) ?? fallbackLabel(key.code)]))
+  return new Map(
+    KEYS.map((key) => [key.code, display(layout?.get(key.code) ?? fallbackLabel(key.code))]),
+  )
 }
 
 interface KeyboardWithLayout {
