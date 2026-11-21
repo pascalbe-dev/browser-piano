@@ -1,4 +1,5 @@
 import { Button } from './Button'
+import { SectionTitle } from './SectionTitle'
 
 export const MAX_TRANSPOSE = 12
 
@@ -16,7 +17,7 @@ export function Transpose({ value, onChange }: TransposeProps) {
 
   return (
     <div className="flex flex-col items-stretch gap-2 text-center">
-      <span className="text-[13px] tracking-[0.08em] text-muted uppercase">Transpose</span>
+      <SectionTitle>Transpose</SectionTitle>
       <Button
         className="px-0 py-3"
         aria-label="Halbton höher"

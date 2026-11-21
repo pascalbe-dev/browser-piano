@@ -1,5 +1,6 @@
+import { Button } from './Button'
 import { type Scale, type ScaleMode, pitchClassName } from './notes'
-import './ScaleSelect.css'
+import { SectionTitle } from './SectionTitle'
 
 interface ScaleSelectProps {
   value: Scale
@@ -13,10 +14,11 @@ const MODES: { mode: ScaleMode; label: string }[] = [
 
 export function ScaleSelect({ value, onChange }: ScaleSelectProps) {
   return (
-    <div className="scale-select">
-      <span className="scale-title">Tonart</span>
+    <div className="flex flex-col items-stretch gap-2 text-center">
+      <SectionTitle>Tonart</SectionTitle>
       <select
         aria-label="Grundton"
+        className="cursor-pointer rounded-lg border border-line bg-surface px-0 py-2.5 text-center text-fg [text-align-last:center]"
         value={value.root}
         onChange={(event) => {
           onChange({ ...value, root: Number(event.target.value) })
@@ -29,17 +31,16 @@ export function ScaleSelect({ value, onChange }: ScaleSelectProps) {
           </option>
         ))}
       </select>
-      <div className="scale-modes">
+      <div className="flex gap-1.5">
         {MODES.map(({ mode, label }) => (
-          <button
+          <Button
             key={mode}
-            type="button"
-            tabIndex={-1}
-            className={value.mode === mode ? 'selected' : ''}
+            className="flex-1 px-0 py-2 text-[14px]"
+            selected={value.mode === mode}
             onClick={() => onChange({ ...value, mode })}
           >
             {label}
-          </button>
+          </Button>
         ))}
       </div>
     </div>
