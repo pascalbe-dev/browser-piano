@@ -115,7 +115,7 @@ function App() {
   return (
     <main className="app">
       <h1>
-        <img src="/logo.svg" alt="" width={36} height={36} />
+        <img src={`${import.meta.env.BASE_URL}logo.svg`} alt="" width={36} height={36} />
         Browser Piano
       </h1>
       <div className="stage">
