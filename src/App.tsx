@@ -134,7 +134,7 @@ function App() {
           onRelease={release}
         />
       </div>
-      <div className="hands">
+      <div className="mt-4 flex flex-wrap items-stretch gap-4">
         <LeftHand
           scale={scale}
           progressionId={playback.progressionId}

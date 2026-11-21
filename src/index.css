@@ -4,7 +4,8 @@
 
 @layer base {
   button,
-  select {
+  select,
+  kbd {
     font: inherit;
   }
 }
