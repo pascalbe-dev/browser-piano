@@ -66,6 +66,11 @@ const IMS_YOURS_TRANSCRIPTION = `
 
 const IMS_YOURS_LOOP_SLOTS = 512
 
+const COMPLICATED_TRANSCRIPTION = `
+`
+
+const COMPLICATED_LOOP_SLOTS = 512
+
 export const SONGS: Song[] = [
   {
     id: 'save-tonight',
@@ -91,6 +96,20 @@ export const SONGS: Song[] = [
     notes: buildNotes(IMS_YOURS_TRANSCRIPTION, {
       loopStart: 64,
       loopSlots: IMS_YOURS_LOOP_SLOTS,
+      slotScale: 1,
+    }),
+  },
+  {
+    id: 'complicated',
+    title: 'Complicated',
+    draft: true,
+    scale: { root: 0, mode: 'major' },
+    progressionId: 'pop',
+    bpm: 78,
+    loopSlots: COMPLICATED_LOOP_SLOTS,
+    notes: buildNotes(COMPLICATED_TRANSCRIPTION, {
+      loopStart: 0,
+      loopSlots: COMPLICATED_LOOP_SLOTS,
       slotScale: 1,
     }),
   },
