@@ -39,8 +39,7 @@ export function RightHand({ songId, onSong, volume, onVolume }: RightHandProps) 
             >
               <kbd className="shortcut">{songShortcut(position + 1)}</kbd>
               {song.title}
-              {song.notes.length === 0 && <small>nur Akkorde</small>}
-              {song.notes.length > 0 && song.draft && <small>Entwurf</small>}
+              {song.draft && <small>Entwurf</small>}
             </button>
           ))}
         </div>

@@ -33,7 +33,6 @@ function buildNotes(raw: string, loopStart: number, loopSlots: number): SongNote
   const onsets = raw
     .trim()
     .split(/\s+/)
-    .filter(Boolean)
     .map((token) => {
       const [, slot, name, octave] = /^(\d+)([a-g])(\d)$/.exec(token) ?? []
       return { start: Number(slot) - loopStart, key: keyOf(name, Number(octave)) }
@@ -59,15 +58,6 @@ export const SONGS: Song[] = [
     progressionId: 'minor-pop',
     loopSlots: SAVE_TONIGHT_LOOP_SLOTS,
     notes: buildNotes(SAVE_TONIGHT_TRANSCRIPTION, SAVE_TONIGHT_LOOP_START, SAVE_TONIGHT_LOOP_SLOTS),
-  },
-  {
-    id: 'im-yours',
-    title: "I'm Yours",
-    draft: false,
-    scale: { root: 0, mode: 'major' },
-    progressionId: 'pop',
-    loopSlots: 32,
-    notes: [],
   },
 ]
 

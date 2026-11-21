@@ -64,7 +64,7 @@ export function usePlayback(
       },
     }
     const voices = [leftHand]
-    if (song && timeline && song.notes.length > 0) {
+    if (song && timeline) {
       voices.push({
         velocity: () => (latest.current.rightVolume / 100) ** 2,
         stepAt: (index) => {
