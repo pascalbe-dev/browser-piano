@@ -5,6 +5,7 @@ import { LeftHand } from './LeftHand'
 import { Piano } from './Piano'
 import { RightHand } from './RightHand'
 import { ScaleSelect } from './ScaleSelect'
+import { SONGS_ENABLED } from './songs'
 import { MAX_TRANSPOSE, Transpose } from './Transpose'
 import { useKeyLabels } from './useKeyLabels'
 import { usePlayback } from './usePlayback'
@@ -144,12 +145,14 @@ function App() {
           playing={playback.playing}
           onToggle={() => void togglePlayback()}
         />
-        <RightHand
-          songId={playback.songId}
-          onSong={playback.selectSong}
-          volume={playback.rightVolume}
-          onVolume={playback.setRightVolume}
-        />
+        {SONGS_ENABLED && (
+          <RightHand
+            songId={playback.songId}
+            onSong={playback.selectSong}
+            volume={playback.rightVolume}
+            onVolume={playback.setRightVolume}
+          />
+        )}
       </div>
       <p className="status">{STATUS_TEXT[status]}</p>
     </main>

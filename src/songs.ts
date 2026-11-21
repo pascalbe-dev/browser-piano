@@ -1,5 +1,7 @@
 import { BASE_MIDI, type Scale } from './notes'
 
+export const SONGS_ENABLED = false
+
 export interface SongNote {
   start: number
   length: number

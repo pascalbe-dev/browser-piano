@@ -6,6 +6,10 @@
   margin-top: 16px;
 }
 
+.hands > .hand-panel:only-child {
+  flex-grow: 0;
+}
+
 .hand-panel {
   display: flex;
   flex: 1 1 auto;

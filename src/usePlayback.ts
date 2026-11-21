@@ -4,7 +4,7 @@ import { type Scale, chordKeyIndices, keyMidi } from './notes'
 import { PATTERNS, STEPS_PER_BAR, soundingKeys, voiceKeys } from './patterns'
 import { PROGRESSIONS } from './progressions'
 import { type Voice, setTempo, startSequence, stopSequence } from './sequencer'
-import { SONGS, buildTimeline } from './songs'
+import { SONGS, SONGS_ENABLED, buildTimeline } from './songs'
 
 export const MIN_BPM = 40
 export const MAX_BPM = 200
@@ -123,6 +123,7 @@ export function usePlayback(
           setPatternId(patternOption.id)
           return true
         }
+        if (!SONGS_ENABLED) return false
         const songPosition = patternPosition - PATTERNS.length
         if (songPosition === 0) {
           selectSong(null)
@@ -138,6 +139,7 @@ export function usePlayback(
       if (event.code === 'ArrowLeft' || event.code === 'ArrowRight') {
         const direction = event.code === 'ArrowRight' ? 1 : -1
         if (event.shiftKey) {
+          if (!SONGS_ENABLED) return false
           setRightVolume((value) => clamp(value + direction * STEP, 0, 100))
         } else {
           setBpm((value) => clamp(value + direction * STEP, MIN_BPM, MAX_BPM))
