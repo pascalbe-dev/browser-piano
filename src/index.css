@@ -20,6 +20,24 @@
   --color-surface: #2b2e3a;
   --color-surface-hover: #363a49;
   --color-line: #3a3d4a;
+
+  --color-key-edge: #111;
+  --color-key: #f5f5f4;
+  --color-key-ink: #333;
+  --color-key-muted: #c4c4c2;
+  --color-key-muted-ink: #777;
+  --color-key-dark: #1c1c1f;
+  --color-key-dark-ink: #d4d4d8;
+  --color-key-dark-muted: #3d3d44;
+  --color-key-dark-muted-ink: #888;
+  --color-chord: #5eead4;
+  --color-chord-ink: #134e4a;
+  --color-chord-dark: #0f766e;
+  --color-chord-dark-ink: #ccfbf1;
+  --color-melody: #fbbf24;
+  --color-melody-ink: #451a03;
+  --color-melody-dark: #b45309;
+  --color-melody-dark-ink: #fef3c7;
 }
 
 :root {
