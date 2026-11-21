@@ -62,6 +62,16 @@
   color: #ccfbf1;
 }
 
+.piano-key.white.song {
+  background: #fbbf24;
+  color: #451a03;
+}
+
+.piano-key.black.song {
+  background: #b45309;
+  color: #fef3c7;
+}
+
 .piano-key.white.active {
   background: var(--accent);
 }

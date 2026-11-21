@@ -31,8 +31,8 @@ function App() {
   const [activeKeys, setActiveKeys] = useState<ReadonlySet<number>>(new Set())
   const [status, setStatus] = useState<AudioStatus>('idle')
   const keyLabels = useKeyLabels()
-  const playback = usePlayback(scale, transpose, setStatus)
-  const { toggle: toggleLeftHand, handleShortcut: handleLeftHandShortcut } = playback
+  const playback = usePlayback(scale, setScale, transpose, setStatus)
+  const { toggle: togglePlayback, handleShortcut: handlePlaybackShortcut } = playback
 
   const syncActive = useCallback(() => {
     setActiveKeys(new Set(playing.current.keys()))
@@ -65,7 +65,7 @@ function App() {
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.metaKey || event.ctrlKey || event.altKey) return
-      if (handleLeftHandShortcut(event)) {
+      if (handlePlaybackShortcut(event)) {
         event.preventDefault()
         return
       }
@@ -77,7 +77,7 @@ function App() {
       }
       if (event.code === 'Space') {
         event.preventDefault()
-        if (!event.repeat) void toggleLeftHand()
+        if (!event.repeat) void togglePlayback()
         return
       }
       const index = keyMap.codeToIndex.get(event.code)
@@ -108,7 +108,7 @@ function App() {
       window.removeEventListener('keyup', onKeyUp)
       window.removeEventListener('blur', onBlur)
     }
-  }, [keyMap, press, release, syncActive, toggleLeftHand, handleLeftHandShortcut])
+  }, [keyMap, press, release, syncActive, togglePlayback, handlePlaybackShortcut])
 
   return (
     <main className="app">
@@ -122,6 +122,7 @@ function App() {
           transpose={transpose}
           activeKeys={activeKeys}
           autoKeys={playback.autoKeys}
+          songKeys={playback.songKeys}
           keyLabels={keyLabels}
           keyCodes={keyMap.indexToCodes}
           onPress={press}
@@ -139,7 +140,7 @@ function App() {
         patternId={playback.patternId}
         onPattern={playback.setPatternId}
         playing={playback.playing}
-        onToggle={() => void toggleLeftHand()}
+        onToggle={() => void togglePlayback()}
       />
       <p className="status">{STATUS_TEXT[status]}</p>
     </main>
