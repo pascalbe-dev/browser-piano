@@ -99,6 +99,7 @@ export function usePlayback(
       const selected = SONGS.find((item) => item.id === id)
       if (!selected) return
       setProgressionId(selected.progressionId)
+      if (selected.bpm !== undefined) setBpm(selected.bpm)
       onScaleChange(selected.scale)
     },
     [onScaleChange],
