@@ -32,7 +32,7 @@ function App() {
   const [status, setStatus] = useState<AudioStatus>('idle')
   const keyLabels = useKeyLabels()
   const leftHand = useLeftHand(scale, transpose, setStatus)
-  const { toggle: toggleLeftHand } = leftHand
+  const { toggle: toggleLeftHand, handleShortcut: handleLeftHandShortcut } = leftHand
 
   const syncActive = useCallback(() => {
     setActiveKeys(new Set(playing.current.keys()))
@@ -65,6 +65,10 @@ function App() {
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.metaKey || event.ctrlKey || event.altKey) return
+      if (handleLeftHandShortcut(event)) {
+        event.preventDefault()
+        return
+      }
       if (event.code === 'ArrowUp' || event.code === 'ArrowDown') {
         event.preventDefault()
         const step = event.code === 'ArrowUp' ? 1 : -1
@@ -104,7 +108,7 @@ function App() {
       window.removeEventListener('keyup', onKeyUp)
       window.removeEventListener('blur', onBlur)
     }
-  }, [keyMap, press, release, syncActive, toggleLeftHand])
+  }, [keyMap, press, release, syncActive, toggleLeftHand, handleLeftHandShortcut])
 
   return (
     <main className="app">
