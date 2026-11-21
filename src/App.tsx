@@ -1,7 +1,8 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { type AudioStatus, noteOff, noteOn, releaseAll, startAudio } from './audio'
-import { DEFAULT_SCALE, buildKeyMap, keyMidi } from './notes'
+import { DEFAULT_SCALE, type Scale, buildKeyMap, keyMidi } from './notes'
 import { Piano } from './Piano'
+import { ScaleSelect } from './ScaleSelect'
 import { MAX_TRANSPOSE, Transpose } from './Transpose'
 import { useKeyLabels } from './useKeyLabels'
 import './App.css'
@@ -21,7 +22,7 @@ function App() {
     transposeRef.current = transpose
   }, [transpose])
 
-  const scale = DEFAULT_SCALE
+  const [scale, setScale] = useState<Scale>(DEFAULT_SCALE)
   const keyMap = useMemo(() => buildKeyMap(scale), [scale])
   const heldCodes = useRef(new Map<string, number>())
   const playing = useRef(new Map<number, number>())
@@ -100,7 +101,10 @@ function App() {
     <main className="app">
       <h1>Browser Piano</h1>
       <div className="stage">
-        <Transpose value={transpose} onChange={setTranspose} />
+        <div className="sidebar">
+          <ScaleSelect value={scale} onChange={setScale} />
+          <Transpose value={transpose} onChange={setTranspose} />
+        </div>
         <Piano
           transpose={transpose}
           activeKeys={activeKeys}
