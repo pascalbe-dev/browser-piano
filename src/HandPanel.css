@@ -1,8 +1,16 @@
-.hand-panel {
+.hands {
   display: flex;
-  flex-direction: column;
+  flex-wrap: wrap;
+  align-items: stretch;
   gap: 16px;
   margin-top: 16px;
+}
+
+.hand-panel {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  gap: 16px;
   padding: 20px 24px;
   border-radius: 12px;
   background: var(--panel);

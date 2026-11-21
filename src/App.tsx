@@ -130,25 +130,27 @@ function App() {
           onRelease={release}
         />
       </div>
-      <LeftHand
-        scale={scale}
-        progressionId={playback.progressionId}
-        onProgression={playback.setProgressionId}
-        bpm={playback.bpm}
-        onBpm={playback.setBpm}
-        volume={playback.volume}
-        onVolume={playback.setVolume}
-        patternId={playback.patternId}
-        onPattern={playback.setPatternId}
-        playing={playback.playing}
-        onToggle={() => void togglePlayback()}
-      />
-      <RightHand
-        songId={playback.songId}
-        onSong={playback.selectSong}
-        volume={playback.rightVolume}
-        onVolume={playback.setRightVolume}
-      />
+      <div className="hands">
+        <LeftHand
+          scale={scale}
+          progressionId={playback.progressionId}
+          onProgression={playback.setProgressionId}
+          bpm={playback.bpm}
+          onBpm={playback.setBpm}
+          volume={playback.volume}
+          onVolume={playback.setVolume}
+          patternId={playback.patternId}
+          onPattern={playback.setPatternId}
+          playing={playback.playing}
+          onToggle={() => void togglePlayback()}
+        />
+        <RightHand
+          songId={playback.songId}
+          onSong={playback.selectSong}
+          volume={playback.rightVolume}
+          onVolume={playback.setRightVolume}
+        />
+      </div>
       <p className="status">{STATUS_TEXT[status]}</p>
     </main>
   )
