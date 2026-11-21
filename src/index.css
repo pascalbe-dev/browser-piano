@@ -1,16 +1,8 @@
-@layer theme, base, components, utilities;
-@import 'tailwindcss/theme.css' layer(theme);
-@import 'tailwindcss/utilities.css' layer(utilities);
-
-@layer base {
-  button,
-  select,
-  kbd {
-    font: inherit;
-  }
-}
+@import 'tailwindcss';
 
 @theme {
+  --font-sans: system-ui, 'Segoe UI', Roboto, sans-serif;
+
   --color-page: #16171d;
   --color-panel: #20222b;
   --color-fg: #e5e7eb;
@@ -40,33 +32,11 @@
   --color-melody-dark-ink: #fef3c7;
 }
 
-:root {
-  --bg: #16171d;
-  --panel: #20222b;
-  --text: #e5e7eb;
-  --muted: #9ca3af;
-  --accent: #c084fc;
-  --accent-strong: #a855f7;
-
-  font: 16px/1.4 system-ui, 'Segoe UI', Roboto, sans-serif;
-  color-scheme: dark;
-  color: var(--text);
-  background: var(--bg);
-}
-
-* {
-  box-sizing: border-box;
-}
-
-body {
-  margin: 0;
-  min-height: 100svh;
-  display: grid;
-  place-items: center;
-  user-select: none;
-}
-
-#root {
-  width: 100%;
-  padding: 24px;
+@layer base {
+  html {
+    line-height: 1.4;
+    color-scheme: dark;
+    color: var(--color-fg);
+    background: var(--color-page);
+  }
 }

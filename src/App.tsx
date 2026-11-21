@@ -9,7 +9,6 @@ import { SONGS_ENABLED } from './songs'
 import { MAX_TRANSPOSE, Transpose } from './Transpose'
 import { useKeyLabels } from './useKeyLabels'
 import { usePlayback } from './usePlayback'
-import './App.css'
 
 const STATUS_TEXT: Record<AudioStatus, string> = {
   idle: 'Taste drücken oder klicken, um den Ton zu starten',
@@ -113,13 +112,13 @@ function App() {
   }, [keyMap, press, release, syncActive, togglePlayback, handlePlaybackShortcut])
 
   return (
-    <main className="app">
-      <h1>
+    <main className="mx-auto max-w-300">
+      <h1 className="mb-6 flex items-center gap-3 text-[28px] font-medium">
         <img src={`${import.meta.env.BASE_URL}logo.svg`} alt="" width={36} height={36} />
         Browser Piano
       </h1>
-      <div className="stage">
-        <div className="sidebar">
+      <div className="flex items-center gap-6 rounded-xl bg-panel p-6">
+        <div className="flex w-26 flex-col gap-6">
           <ScaleSelect value={scale} onChange={setScale} />
           <Transpose value={transpose} onChange={setTranspose} />
         </div>
@@ -157,7 +156,7 @@ function App() {
           />
         )}
       </div>
-      <p className="status">{STATUS_TEXT[status]}</p>
+      <p className="mt-3 text-[14px] text-muted">{STATUS_TEXT[status]}</p>
     </main>
   )
 }

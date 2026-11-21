@@ -16,7 +16,7 @@ export function RangeRow({ label, value, min, max, unit, shortcut, onChange }: R
       <span>{label}</span>
       <input
         type="range"
-        className="w-60 accent-accent-strong"
+        className="m-0.5 w-60 accent-accent-strong"
         min={min}
         max={max}
         value={value}
