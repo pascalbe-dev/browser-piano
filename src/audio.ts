@@ -25,7 +25,9 @@ const SAMPLE_URLS: Record<string, string> = {
   'F#6': 'Fs6.mp3',
 }
 
-type Instrument = Tone.PolySynth | Tone.Sampler
+const SEQUENCER_LOOK_AHEAD = 0.03
+
+type Instrument =Tone.PolySynth | Tone.Sampler
 
 let instrument: Instrument | null = null
 let startPromise: Promise<void> | null = null
@@ -39,6 +41,7 @@ export function startAudio(onStatus: (status: AudioStatus) => void): Promise<voi
 
 async function initAudio(onStatus: (status: AudioStatus) => void): Promise<void> {
   await Tone.start()
+  Tone.getContext().lookAhead = SEQUENCER_LOOK_AHEAD
 
   const fallback = new Tone.PolySynth(Tone.Synth, {
     oscillator: { type: 'triangle' },
@@ -62,11 +65,11 @@ async function initAudio(onStatus: (status: AudioStatus) => void): Promise<void>
   })
 }
 
-export function noteOn(midi: number, time: number = Tone.now()): void {
+export function noteOn(midi: number, time: number = Tone.immediate()): void {
   instrument?.triggerAttack(Tone.Frequency(midi, 'midi').toFrequency(), time)
 }
 
-export function noteOff(midi: number, time: number = Tone.now()): void {
+export function noteOff(midi: number, time: number = Tone.immediate()): void {
   instrument?.triggerRelease(Tone.Frequency(midi, 'midi').toFrequency(), time)
 }
 
