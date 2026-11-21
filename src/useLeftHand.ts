@@ -18,6 +18,7 @@ export function useLeftHand(
   const [progressionId, setProgressionId] = useState(PROGRESSIONS[0].id)
   const [patternId, setPatternId] = useState(PATTERNS[0].id)
   const [bpm, setBpm] = useState(90)
+  const [volume, setVolume] = useState(70)
   const [playing, setPlaying] = useState(false)
   const [step, setStep] = useState<number | null>(null)
 
@@ -25,15 +26,16 @@ export function useLeftHand(
   const pattern = PATTERNS.find((item) => item.id === patternId) ?? PATTERNS[0]
   const degrees = progression.degrees
 
-  const latest = useRef({ scale, transpose, degrees, bpm })
+  const latest = useRef({ scale, transpose, degrees, bpm, volume })
   useEffect(() => {
-    latest.current = { scale, transpose, degrees, bpm }
-  }, [scale, transpose, degrees, bpm])
+    latest.current = { scale, transpose, degrees, bpm, volume }
+  }, [scale, transpose, degrees, bpm, volume])
 
   useEffect(() => {
     if (!playing) return
     startSequence({
       bpm: latest.current.bpm,
+      velocity: () => (latest.current.volume / 100) ** 2,
       stepAt: (index) => {
         const voice = pattern.steps[index % STEPS_PER_BAR]
         if (voice === null) return null
@@ -78,6 +80,8 @@ export function useLeftHand(
     setPatternId,
     bpm,
     setBpm,
+    volume,
+    setVolume,
     playing,
     toggle,
     degrees,

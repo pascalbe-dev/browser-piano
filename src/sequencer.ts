@@ -3,6 +3,7 @@ import { noteOff, noteOn } from './audio'
 
 export interface SequenceConfig {
   bpm: number
+  velocity: () => number
   stepAt: (step: number) => number[] | null
   onStep: (step: number) => void
 }
@@ -21,7 +22,8 @@ export function startSequence(config: SequenceConfig): void {
     if (midis !== null) {
       held.forEach((midi) => noteOff(midi, time))
       held = midis
-      held.forEach((midi) => noteOn(midi, time))
+      const velocity = config.velocity()
+      held.forEach((midi) => noteOn(midi, time, velocity))
     }
     Tone.getDraw().schedule(() => config.onStep(current), time)
   }, '8n')

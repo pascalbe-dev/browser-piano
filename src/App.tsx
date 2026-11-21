@@ -130,6 +130,8 @@ function App() {
         onProgression={leftHand.setProgressionId}
         bpm={leftHand.bpm}
         onBpm={leftHand.setBpm}
+        volume={leftHand.volume}
+        onVolume={leftHand.setVolume}
         patternId={leftHand.patternId}
         onPattern={leftHand.setPatternId}
         playing={leftHand.playing}

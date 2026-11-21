@@ -12,6 +12,8 @@ interface LeftHandProps {
   onPattern: (id: string) => void
   bpm: number
   onBpm: (bpm: number) => void
+  volume: number
+  onVolume: (volume: number) => void
   playing: boolean
   onToggle: () => void
   degrees: number[]
@@ -26,6 +28,8 @@ export function LeftHand({
   onPattern,
   bpm,
   onBpm,
+  volume,
+  onVolume,
   playing,
   onToggle,
   degrees,
@@ -98,6 +102,22 @@ export function LeftHand({
           }}
         />
         <output>{bpm} BPM</output>
+      </label>
+
+      <label className="tempo">
+        <span>Lautstärke</span>
+        <input
+          type="range"
+          min={0}
+          max={100}
+          value={volume}
+          tabIndex={-1}
+          onChange={(event) => {
+            onVolume(Number(event.target.value))
+            event.target.blur()
+          }}
+        />
+        <output>{volume} %</output>
       </label>
     </section>
   )

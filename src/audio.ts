@@ -65,8 +65,8 @@ async function initAudio(onStatus: (status: AudioStatus) => void): Promise<void>
   })
 }
 
-export function noteOn(midi: number, time: number = Tone.immediate()): void {
-  instrument?.triggerAttack(Tone.Frequency(midi, 'midi').toFrequency(), time)
+export function noteOn(midi: number, time: number = Tone.immediate(), velocity = 1): void {
+  instrument?.triggerAttack(Tone.Frequency(midi, 'midi').toFrequency(), time, velocity)
 }
 
 export function noteOff(midi: number, time: number = Tone.immediate()): void {
