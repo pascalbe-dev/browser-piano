@@ -1,6 +1,6 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { type AudioStatus, noteOff, noteOn, releaseAll, startAudio } from './audio'
-import { KEY_BY_CODE, keyMidi } from './notes'
+import { DEFAULT_SCALE, buildKeyMap, keyMidi } from './notes'
 import { Piano } from './Piano'
 import { MAX_TRANSPOSE, Transpose } from './Transpose'
 import { useKeyLabels } from './useKeyLabels'
@@ -21,6 +21,9 @@ function App() {
     transposeRef.current = transpose
   }, [transpose])
 
+  const scale = DEFAULT_SCALE
+  const keyMap = useMemo(() => buildKeyMap(scale), [scale])
+  const heldCodes = useRef(new Map<string, number>())
   const playing = useRef(new Map<number, number>())
   const [activeKeys, setActiveKeys] = useState<ReadonlySet<number>>(new Set())
   const [status, setStatus] = useState<AudioStatus>('idle')
@@ -63,16 +66,22 @@ function App() {
         setTranspose((value) => Math.max(-MAX_TRANSPOSE, Math.min(MAX_TRANSPOSE, value + step)))
         return
       }
-      const key = KEY_BY_CODE.get(event.code)
-      if (!key) return
+      const index = keyMap.codeToIndex.get(event.code)
+      if (index === undefined) return
       event.preventDefault()
-      if (!event.repeat) press(key.index)
+      if (event.repeat || heldCodes.current.has(event.code)) return
+      heldCodes.current.set(event.code, index)
+      press(index)
     }
     const onKeyUp = (event: KeyboardEvent) => {
-      const key = KEY_BY_CODE.get(event.code)
-      if (key) release(key.index)
+      const index = heldCodes.current.get(event.code)
+      if (index === undefined) return
+      heldCodes.current.delete(event.code)
+      const stillHeld = [...heldCodes.current.values()].includes(index)
+      if (!stillHeld) release(index)
     }
     const onBlur = () => {
+      heldCodes.current.clear()
       playing.current.clear()
       syncActive()
       releaseAll()
@@ -85,7 +94,7 @@ function App() {
       window.removeEventListener('keyup', onKeyUp)
       window.removeEventListener('blur', onBlur)
     }
-  }, [press, release, syncActive])
+  }, [keyMap, press, release, syncActive])
 
   return (
     <main className="app">
@@ -96,6 +105,7 @@ function App() {
           transpose={transpose}
           activeKeys={activeKeys}
           keyLabels={keyLabels}
+          keyCodes={keyMap.indexToCodes}
           onPress={press}
           onRelease={release}
         />

@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react'
-import { KEYS } from './notes'
+import { ALL_CODES } from './notes'
 
 const US_LABELS: Record<string, string> = {
   Comma: ',',
   Period: '.',
   Slash: '/',
   Semicolon: ';',
+  Quote: "'",
   BracketLeft: '[',
-  Minus: '-',
 }
 
 function fallbackLabel(code: string): string {
@@ -21,7 +21,7 @@ function display(label: string): string {
 
 function buildLabels(layout?: Map<string, string>): ReadonlyMap<string, string> {
   return new Map(
-    KEYS.map((key) => [key.code, display(layout?.get(key.code) ?? fallbackLabel(key.code))]),
+    ALL_CODES.map((code) => [code, display(layout?.get(code) ?? fallbackLabel(code))]),
   )
 }
 
