@@ -3,6 +3,7 @@ import { type AudioStatus, noteOff, noteOn, releaseAll, startAudio } from './aud
 import { DEFAULT_SCALE, type Scale, buildKeyMap, keyMidi } from './notes'
 import { LeftHand } from './LeftHand'
 import { Piano } from './Piano'
+import { RightHand } from './RightHand'
 import { ScaleSelect } from './ScaleSelect'
 import { MAX_TRANSPOSE, Transpose } from './Transpose'
 import { useKeyLabels } from './useKeyLabels'
@@ -141,6 +142,12 @@ function App() {
         onPattern={playback.setPatternId}
         playing={playback.playing}
         onToggle={() => void togglePlayback()}
+      />
+      <RightHand
+        songId={playback.songId}
+        onSong={playback.selectSong}
+        volume={playback.rightVolume}
+        onVolume={playback.setRightVolume}
       />
       <p className="status">{STATUS_TEXT[status]}</p>
     </main>

@@ -9,6 +9,7 @@ export interface SongNote {
 export interface Song {
   id: string
   title: string
+  draft: boolean
   scale: Scale
   progressionId: string
   loopSlots: number
@@ -52,6 +53,7 @@ export const SONGS: Song[] = [
   {
     id: 'save-tonight',
     title: 'Save Tonight',
+    draft: true,
     scale: { root: 0, mode: 'major' },
     progressionId: 'minor-pop',
     loopSlots: SAVE_TONIGHT_LOOP_SLOTS,

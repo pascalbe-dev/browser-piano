@@ -2,7 +2,7 @@ import { type Scale, chordName } from './notes'
 import { PATTERNS } from './patterns'
 import { PROGRESSIONS } from './progressions'
 import { MAX_BPM, MIN_BPM, patternShortcut, progressionShortcut } from './usePlayback'
-import './LeftHand.css'
+import './HandPanel.css'
 
 interface LeftHandProps {
   scale: Scale
@@ -32,13 +32,13 @@ export function LeftHand({
   onToggle,
 }: LeftHandProps) {
   return (
-    <section className="left-hand">
-      <div className="left-hand-header">
-        <span className="left-hand-title">Linke Hand</span>
+    <section className="hand-panel">
+      <div className="hand-header">
+        <span className="hand-title">Linke Hand</span>
         <button type="button" tabIndex={-1} className="play" onClick={onToggle}>
           {playing ? '■ Stopp' : '▶ Start'}
         </button>
-        <span className="left-hand-hint">Leertaste</span>
+        <span className="hand-hint">Leertaste</span>
       </div>
 
       <div className="option-row">

@@ -1,4 +1,4 @@
-.left-hand {
+.hand-panel {
   display: flex;
   flex-direction: column;
   gap: 16px;
@@ -8,25 +8,25 @@
   background: var(--panel);
 }
 
-.left-hand-header {
+.hand-header {
   display: flex;
   align-items: center;
   gap: 12px;
 }
 
-.left-hand-title {
+.hand-title {
   font-size: 13px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--muted);
 }
 
-.left-hand-hint {
+.hand-hint {
   font-size: 12px;
   color: var(--muted);
 }
 
-.left-hand button {
+.hand-panel button {
   padding: 8px 14px;
   border: 1px solid #3a3d4a;
   border-radius: 8px;
@@ -37,12 +37,12 @@
   cursor: pointer;
 }
 
-.left-hand button:hover {
+.hand-panel button:hover {
   background: #363a49;
 }
 
-.left-hand button.selected,
-.left-hand button.play {
+.hand-panel button.selected,
+.hand-panel button.play {
   border-color: var(--accent);
   background: var(--accent-strong);
   color: #fff;
