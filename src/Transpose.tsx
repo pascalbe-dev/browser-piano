@@ -1,4 +1,4 @@
-import './Transpose.css'
+import { Button } from './Button'
 
 export const MAX_TRANSPOSE = 12
 
@@ -15,37 +15,33 @@ export function Transpose({ value, onChange }: TransposeProps) {
   const set = (next: number) => onChange(Math.max(-MAX_TRANSPOSE, Math.min(MAX_TRANSPOSE, next)))
 
   return (
-    <div className="transpose">
-      <span className="transpose-title">Transpose</span>
-      <button
-        type="button"
-        tabIndex={-1}
+    <div className="flex flex-col items-stretch gap-2 text-center">
+      <span className="text-[13px] tracking-[0.08em] text-muted uppercase">Transpose</span>
+      <Button
+        className="px-0 py-3"
         aria-label="Halbton höher"
         disabled={value >= MAX_TRANSPOSE}
         onClick={() => set(value + 1)}
       >
         ▲
-      </button>
-      <button
-        type="button"
-        tabIndex={-1}
-        className="transpose-value"
+      </Button>
+      <Button
+        className="px-0 py-4 text-[24px] font-semibold tabular-nums"
         aria-label="Transpose zurücksetzen"
         title="Zurücksetzen"
         onClick={() => set(0)}
       >
         {formatValue(value)}
-      </button>
-      <button
-        type="button"
-        tabIndex={-1}
+      </Button>
+      <Button
+        className="px-0 py-3"
         aria-label="Halbton tiefer"
         disabled={value <= -MAX_TRANSPOSE}
         onClick={() => set(value - 1)}
       >
         ▼
-      </button>
-      <span className="transpose-hint">Halbtöne · ↑ ↓</span>
+      </Button>
+      <span className="text-[12px] text-muted">Halbtöne · ↑ ↓</span>
     </div>
   )
 }

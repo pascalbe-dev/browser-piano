@@ -2,6 +2,13 @@
 @import 'tailwindcss/theme.css' layer(theme);
 @import 'tailwindcss/utilities.css' layer(utilities);
 
+@layer base {
+  button,
+  select {
+    font: inherit;
+  }
+}
+
 @theme {
   --color-page: #16171d;
   --color-panel: #20222b;
