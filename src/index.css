@@ -1,3 +1,19 @@
+@layer theme, base, components, utilities;
+@import 'tailwindcss/theme.css' layer(theme);
+@import 'tailwindcss/utilities.css' layer(utilities);
+
+@theme {
+  --color-page: #16171d;
+  --color-panel: #20222b;
+  --color-fg: #e5e7eb;
+  --color-muted: #9ca3af;
+  --color-accent: #c084fc;
+  --color-accent-strong: #a855f7;
+  --color-surface: #2b2e3a;
+  --color-surface-hover: #363a49;
+  --color-line: #3a3d4a;
+}
+
 :root {
   --bg: #16171d;
   --panel: #20222b;
