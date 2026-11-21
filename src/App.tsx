@@ -114,7 +114,10 @@ function App() {
 
   return (
     <main className="app">
-      <h1>Browser Piano</h1>
+      <h1>
+        <img src="/logo.svg" alt="" width={36} height={36} />
+        Browser Piano
+      </h1>
       <div className="stage">
         <div className="sidebar">
           <ScaleSelect value={scale} onChange={setScale} />
