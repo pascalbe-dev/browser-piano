@@ -13,11 +13,13 @@ const NO_KEYS: ReadonlySet<number> = new Set()
 
 const STEP = 5
 
-export const progressionShortcut = (position: number): string => String(position + 1)
+const digitLabel = (index: number): string => (index < 9 ? String(index + 1) : index === 9 ? '0' : '')
+
+export const progressionShortcut = (position: number): string => digitLabel(position)
 export const patternShortcut = (position: number): string =>
-  String(PROGRESSIONS.length + position + 1)
+  digitLabel(PROGRESSIONS.length + position)
 export const songShortcut = (position: number): string =>
-  String(PROGRESSIONS.length + PATTERNS.length + position + 1)
+  digitLabel(PROGRESSIONS.length + PATTERNS.length + position)
 
 const clamp = (value: number, min: number, max: number): number =>
   Math.max(min, Math.min(max, value))
@@ -109,7 +111,7 @@ export function usePlayback(
     (event: KeyboardEvent): boolean => {
       const digit = /^Digit(\d)$/.exec(event.code)
       if (digit && !event.shiftKey) {
-        const position = Number(digit[1]) - 1
+        const position = (Number(digit[1]) + 9) % 10
         const progressionOption = PROGRESSIONS[position]
         if (progressionOption) {
           setProgressionId(progressionOption.id)
