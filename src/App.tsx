@@ -6,7 +6,7 @@ import { Piano } from './Piano'
 import { ScaleSelect } from './ScaleSelect'
 import { MAX_TRANSPOSE, Transpose } from './Transpose'
 import { useKeyLabels } from './useKeyLabels'
-import { useLeftHand } from './useLeftHand'
+import { usePlayback } from './usePlayback'
 import './App.css'
 
 const STATUS_TEXT: Record<AudioStatus, string> = {
@@ -31,8 +31,8 @@ function App() {
   const [activeKeys, setActiveKeys] = useState<ReadonlySet<number>>(new Set())
   const [status, setStatus] = useState<AudioStatus>('idle')
   const keyLabels = useKeyLabels()
-  const leftHand = useLeftHand(scale, transpose, setStatus)
-  const { toggle: toggleLeftHand, handleShortcut: handleLeftHandShortcut } = leftHand
+  const playback = usePlayback(scale, transpose, setStatus)
+  const { toggle: toggleLeftHand, handleShortcut: handleLeftHandShortcut } = playback
 
   const syncActive = useCallback(() => {
     setActiveKeys(new Set(playing.current.keys()))
@@ -121,7 +121,7 @@ function App() {
         <Piano
           transpose={transpose}
           activeKeys={activeKeys}
-          autoKeys={leftHand.autoKeys}
+          autoKeys={playback.autoKeys}
           keyLabels={keyLabels}
           keyCodes={keyMap.indexToCodes}
           onPress={press}
@@ -130,15 +130,15 @@ function App() {
       </div>
       <LeftHand
         scale={scale}
-        progressionId={leftHand.progressionId}
-        onProgression={leftHand.setProgressionId}
-        bpm={leftHand.bpm}
-        onBpm={leftHand.setBpm}
-        volume={leftHand.volume}
-        onVolume={leftHand.setVolume}
-        patternId={leftHand.patternId}
-        onPattern={leftHand.setPatternId}
-        playing={leftHand.playing}
+        progressionId={playback.progressionId}
+        onProgression={playback.setProgressionId}
+        bpm={playback.bpm}
+        onBpm={playback.setBpm}
+        volume={playback.volume}
+        onVolume={playback.setVolume}
+        patternId={playback.patternId}
+        onPattern={playback.setPatternId}
+        playing={playback.playing}
         onToggle={() => void toggleLeftHand()}
       />
       <p className="status">{STATUS_TEXT[status]}</p>

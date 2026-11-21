@@ -19,7 +19,7 @@ export const patternShortcut = (position: number): string =>
 const clamp = (value: number, min: number, max: number): number =>
   Math.max(min, Math.min(max, value))
 
-export function useLeftHand(
+export function usePlayback(
   scale: Scale,
   transpose: number,
   onAudioStatus: (status: AudioStatus) => void,

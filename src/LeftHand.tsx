@@ -1,7 +1,7 @@
 import { type Scale, chordName } from './notes'
 import { PATTERNS } from './patterns'
 import { PROGRESSIONS } from './progressions'
-import { MAX_BPM, MIN_BPM, patternShortcut, progressionShortcut } from './useLeftHand'
+import { MAX_BPM, MIN_BPM, patternShortcut, progressionShortcut } from './usePlayback'
 import './LeftHand.css'
 
 interface LeftHandProps {
