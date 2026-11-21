@@ -130,8 +130,8 @@ function App() {
         onProgression={leftHand.setProgressionId}
         bpm={leftHand.bpm}
         onBpm={leftHand.setBpm}
-        beatsPerChord={leftHand.beatsPerChord}
-        onBeatsPerChord={leftHand.setBeatsPerChord}
+        patternId={leftHand.patternId}
+        onPattern={leftHand.setPatternId}
         playing={leftHand.playing}
         onToggle={() => void toggleLeftHand()}
         degrees={leftHand.degrees}

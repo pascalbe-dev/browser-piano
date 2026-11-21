@@ -3,8 +3,7 @@ import { noteOff, noteOn } from './audio'
 
 export interface SequenceConfig {
   bpm: number
-  beatsPerChord: 2 | 4
-  chordAt: (step: number) => number[]
+  stepAt: (step: number) => number[] | null
   onStep: (step: number) => void
 }
 
@@ -16,16 +15,16 @@ export function startSequence(config: SequenceConfig): void {
   const transport = Tone.getTransport()
   transport.bpm.value = config.bpm
   let step = 0
-  eventId = transport.scheduleRepeat(
-    (time) => {
+  eventId = transport.scheduleRepeat((time) => {
+    const current = step++
+    const midis = config.stepAt(current)
+    if (midis !== null) {
       held.forEach((midi) => noteOff(midi, time))
-      const current = step++
-      held = config.chordAt(current)
+      held = midis
       held.forEach((midi) => noteOn(midi, time))
-      Tone.getDraw().schedule(() => config.onStep(current), time)
-    },
-    config.beatsPerChord === 4 ? '1m' : '2n',
-  )
+    }
+    Tone.getDraw().schedule(() => config.onStep(current), time)
+  }, '8n')
   transport.start()
 }
 
