@@ -17,7 +17,7 @@ export function useLeftHand(
 ) {
   const [progressionId, setProgressionId] = useState(PROGRESSIONS[0].id)
   const [patternId, setPatternId] = useState(PATTERNS[0].id)
-  const [bpm, setBpm] = useState(90)
+  const [bpm, setBpm] = useState(110)
   const [volume, setVolume] = useState(70)
   const [playing, setPlaying] = useState(false)
   const [step, setStep] = useState<number | null>(null)
