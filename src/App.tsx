@@ -1,10 +1,12 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { type AudioStatus, noteOff, noteOn, releaseAll, startAudio } from './audio'
 import { DEFAULT_SCALE, type Scale, buildKeyMap, keyMidi } from './notes'
+import { LeftHand } from './LeftHand'
 import { Piano } from './Piano'
 import { ScaleSelect } from './ScaleSelect'
 import { MAX_TRANSPOSE, Transpose } from './Transpose'
 import { useKeyLabels } from './useKeyLabels'
+import { useLeftHand } from './useLeftHand'
 import './App.css'
 
 const STATUS_TEXT: Record<AudioStatus, string> = {
@@ -29,6 +31,8 @@ function App() {
   const [activeKeys, setActiveKeys] = useState<ReadonlySet<number>>(new Set())
   const [status, setStatus] = useState<AudioStatus>('idle')
   const keyLabels = useKeyLabels()
+  const leftHand = useLeftHand(scale, transpose, setStatus)
+  const { toggle: toggleLeftHand } = leftHand
 
   const syncActive = useCallback(() => {
     setActiveKeys(new Set(playing.current.keys()))
@@ -67,6 +71,11 @@ function App() {
         setTranspose((value) => Math.max(-MAX_TRANSPOSE, Math.min(MAX_TRANSPOSE, value + step)))
         return
       }
+      if (event.code === 'Space') {
+        event.preventDefault()
+        if (!event.repeat) void toggleLeftHand()
+        return
+      }
       const index = keyMap.codeToIndex.get(event.code)
       if (index === undefined) return
       event.preventDefault()
@@ -95,7 +104,7 @@ function App() {
       window.removeEventListener('keyup', onKeyUp)
       window.removeEventListener('blur', onBlur)
     }
-  }, [keyMap, press, release, syncActive])
+  }, [keyMap, press, release, syncActive, toggleLeftHand])
 
   return (
     <main className="app">
@@ -108,12 +117,26 @@ function App() {
         <Piano
           transpose={transpose}
           activeKeys={activeKeys}
+          autoKeys={leftHand.autoKeys}
           keyLabels={keyLabels}
           keyCodes={keyMap.indexToCodes}
           onPress={press}
           onRelease={release}
         />
       </div>
+      <LeftHand
+        scale={scale}
+        progressionId={leftHand.progressionId}
+        onProgression={leftHand.setProgressionId}
+        bpm={leftHand.bpm}
+        onBpm={leftHand.setBpm}
+        beatsPerChord={leftHand.beatsPerChord}
+        onBeatsPerChord={leftHand.setBeatsPerChord}
+        playing={leftHand.playing}
+        onToggle={() => void toggleLeftHand()}
+        degrees={leftHand.degrees}
+        currentChord={leftHand.currentChord}
+      />
       <p className="status">{STATUS_TEXT[status]}</p>
     </main>
   )

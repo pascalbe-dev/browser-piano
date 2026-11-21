@@ -52,6 +52,16 @@
   color: #888;
 }
 
+.piano-key.white.auto {
+  background: #5eead4;
+  color: #134e4a;
+}
+
+.piano-key.black.auto {
+  background: #0f766e;
+  color: #ccfbf1;
+}
+
 .piano-key.white.active {
   background: var(--accent);
 }

@@ -4,6 +4,7 @@ import './Piano.css'
 interface PianoProps {
   transpose: number
   activeKeys: ReadonlySet<number>
+  autoKeys: ReadonlySet<number>
   keyLabels: ReadonlyMap<string, string>
   keyCodes: ReadonlyMap<number, string[]>
   onPress: (index: number) => void
@@ -13,6 +14,7 @@ interface PianoProps {
 export function Piano({
   transpose,
   activeKeys,
+  autoKeys,
   keyLabels,
   keyCodes,
   onPress,
@@ -31,6 +33,7 @@ export function Piano({
               'piano-key',
               key.isBlack ? 'black' : 'white',
               codes ? '' : 'muted',
+              autoKeys.has(key.index) ? 'auto' : '',
               activeKeys.has(key.index) ? 'active' : '',
             ].join(' ')}
             style={{ '--position': key.whiteIndex } as React.CSSProperties}

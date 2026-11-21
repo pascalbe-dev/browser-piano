@@ -1,0 +1,102 @@
+.left-hand {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 16px;
+  padding: 20px 24px;
+  border-radius: 12px;
+  background: var(--panel);
+}
+
+.left-hand-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.left-hand-title {
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.left-hand-hint {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.left-hand button {
+  padding: 8px 14px;
+  border: 1px solid #3a3d4a;
+  border-radius: 8px;
+  background: #2b2e3a;
+  color: var(--text);
+  font: inherit;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.left-hand button:hover {
+  background: #363a49;
+}
+
+.left-hand button.selected,
+.left-hand button.play {
+  border-color: var(--accent);
+  background: var(--accent-strong);
+  color: #fff;
+}
+
+.presets,
+.beats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.chord-strip {
+  display: flex;
+  gap: 8px;
+}
+
+.chord-strip span {
+  min-width: 72px;
+  padding: 10px 0;
+  border: 1px solid #3a3d4a;
+  border-radius: 8px;
+  text-align: center;
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.chord-strip span.current {
+  border-color: #14b8a6;
+  background: #14b8a6;
+  color: #04201d;
+}
+
+.tempo {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 24px;
+}
+
+.tempo label {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 14px;
+}
+
+.tempo input[type='range'] {
+  width: 240px;
+  accent-color: var(--accent-strong);
+}
+
+.tempo output {
+  min-width: 70px;
+  font-variant-numeric: tabular-nums;
+}
