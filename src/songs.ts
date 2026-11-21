@@ -40,9 +40,9 @@ interface TranscriptionOptions {
 
 function buildNotes(raw: string, options: TranscriptionOptions): SongNote[] {
   const { loopStart, loopSlots, slotScale } = options
-  const onsets = raw
-    .trim()
-    .split(/\s+/)
+  const tokens = raw.trim().split(/\s+/).filter(Boolean)
+  if (tokens.length === 0) return []
+  const onsets = tokens
     .map((token) => {
       const [, slot, name, octave, length] = /^(\d+)([a-g])(\d)(?::(\d+))?$/.exec(token) ?? []
       return {
@@ -58,18 +58,14 @@ function buildNotes(raw: string, options: TranscriptionOptions): SongNote[] {
   })
 }
 
-const SAVE_TONIGHT_TRANSCRIPTION = `
-`
+const localData = import.meta.glob<{ default: Record<string, string> }>('./songData.local.ts', {
+  eager: true,
+})
+const transcriptions: Record<string, string> = Object.values(localData)[0]?.default ?? {}
 
 const SAVE_TONIGHT_LOOP_SLOTS = 512
 
-const IMS_YOURS_TRANSCRIPTION = `
-`
-
 const IMS_YOURS_LOOP_SLOTS = 512
-
-const COMPLICATED_TRANSCRIPTION = `
-`
 
 const COMPLICATED_LOOP_SLOTS = 512
 
@@ -81,7 +77,7 @@ export const SONGS: Song[] = [
     scale: { root: 0, mode: 'major' },
     progressionId: 'minor-pop',
     loopSlots: SAVE_TONIGHT_LOOP_SLOTS,
-    notes: buildNotes(SAVE_TONIGHT_TRANSCRIPTION, {
+    notes: buildNotes(transcriptions['save-tonight'] ?? '', {
       loopStart: 32,
       loopSlots: SAVE_TONIGHT_LOOP_SLOTS,
       slotScale: 2,
@@ -95,7 +91,7 @@ export const SONGS: Song[] = [
     progressionId: 'pop',
     bpm: 76,
     loopSlots: IMS_YOURS_LOOP_SLOTS,
-    notes: buildNotes(IMS_YOURS_TRANSCRIPTION, {
+    notes: buildNotes(transcriptions['im-yours'] ?? '', {
       loopStart: 64,
       loopSlots: IMS_YOURS_LOOP_SLOTS,
       slotScale: 1,
@@ -109,7 +105,7 @@ export const SONGS: Song[] = [
     progressionId: 'pop',
     bpm: 78,
     loopSlots: COMPLICATED_LOOP_SLOTS,
-    notes: buildNotes(COMPLICATED_TRANSCRIPTION, {
+    notes: buildNotes(transcriptions['complicated'] ?? '', {
       loopStart: 0,
       loopSlots: COMPLICATED_LOOP_SLOTS,
       slotScale: 1,
